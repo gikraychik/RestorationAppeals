@@ -117,10 +117,29 @@ void Analysis::AddressAnalisys::calc_stack_dist(void)
 		}
 	}
 }
-Analysis::TimeAnalisys::TimeAnalisys(void) {}
-Analysis::TimeAnalisys::TimeAnalisys(const Analysis &analis)
+params_time Analysis::TimeAnalisys::calc_params(method mode, const Analysis &analis)
 {
-	std::vector <unsigned int> data(analis.len()-1, 0);
+	int len = analis.len();
+	unsigned int *data = new unsigned int[len-1];
+	int *pos = new int[1];
+	double *l = new double[1];
+	for (int i = 1; i < len; ++i)
+	{
+		data[i-1] = analis.time(i).get_val() - analis.time(i-1).get_val();
+	}
+	double lambda = 0.0;
+	lambda = (mode == MOMENTS) ? calc_lambda_moments(data, len) : calc_lambda_distr(data, len, 0.000001, 0.09);
+	pos[0] = 0; l[0] = lambda;
+	params_time result(pos, l, 1);
+	delete[] data;
+	delete[] pos;
+	delete[] l;
+	return result;
+}
+//Analysis::TimeAnalisys::TimeAnalisys(void) {}
+Analysis::TimeAnalisys::TimeAnalisys(void)
+{
+	/*std::vector <unsigned int> data(analis.len()-1, 0);
 	for (int i = 1; i < analis.len(); i++)
 	{
 		data[i-1] = analis.time(i).get_val() - analis.time(i-1).get_val();
@@ -134,20 +153,21 @@ Analysis::TimeAnalisys::TimeAnalisys(const Analysis &analis)
 	fclose(f);
 	//std::cout << lambda << std::endl;
 	//calc_lambda_distr(data);
+	*/
 }
-double Analysis::TimeAnalisys::calc_lambda_moments(const std::vector<unsigned int> &data)
+double Analysis::TimeAnalisys::calc_lambda_moments(unsigned int *data, int len)
 {
 	double sum = 0.0;
-	for (int i = 0; i < data.size(); i++)
+	for (int i = 0; i < len; ++i)
 		sum += data[i];
-	return (double)data.size() / (double)sum;
+	return (double)len / (double)sum;
 }
-double Analysis::TimeAnalisys::calc_lambda_distr(const std::vector<unsigned int> &data, double a, double b)
+double Analysis::TimeAnalisys::calc_lambda_distr(unsigned int *data, int len, double a, double b)
 {
 	double sum = 0.0;
 	//const double a = 0.0000001;			// must be configured
 	//const double b = 0.09;				// must be configured
-	const double n = data.size();
+	const double n = len;
 	for (int i = 0; i < n; i++)
 		sum += data[i];
 	//std::cout << (a*sum*n)/(2 + sum*n) << std::endl;

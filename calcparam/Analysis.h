@@ -4,7 +4,8 @@
 #include <vector>
 #include "IO_Manager.h"
 #include <set>
-#include "AvlTree.h"
+#include "params.h"
+//#include "AvlTree.h"
 
 class Analysis
 {
@@ -42,10 +43,11 @@ public:
 	{
 	public:
 		TimeAnalisys(void);
-		TimeAnalisys(const Analysis &analis);
+		enum method { MOMENTS, DISTR };
+		static params_time calc_params(method mode, const Analysis &analis);
 	private:
-		static double calc_lambda_moments(const std::vector<unsigned int> &data);
-		static double calc_lambda_distr(const std::vector<unsigned int> &data, double a, double b);
+		static double calc_lambda_moments(unsigned int *data, int len);
+		static double calc_lambda_distr(unsigned int *data, int len, double a, double b);
 	};
 private:
 	std::fstream input;
