@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "calcparam", "calcparam\calcparam.vcxproj", "{320076C9-7CE7-4D3B-8D74-14943D3284EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gui", "gui\gui.csproj", "{D381285B-3E5D-4EA3-A605-C18557422C54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Debug|x86 = Debug|x86
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Debug|Win32.Build.0 = Debug|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Debug|x86.ActiveCfg = Debug|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Release|Win32.ActiveCfg = Release|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Release|Win32.Build.0 = Release|Win32
+		{320076C9-7CE7-4D3B-8D74-14943D3284EB}.Release|x86.ActiveCfg = Release|Win32
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Debug|Win32.ActiveCfg = Debug|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Debug|x86.ActiveCfg = Debug|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Debug|x86.Build.0 = Debug|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Release|Win32.ActiveCfg = Release|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Release|x86.ActiveCfg = Release|x86
+		{D381285B-3E5D-4EA3-A605-C18557422C54}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
