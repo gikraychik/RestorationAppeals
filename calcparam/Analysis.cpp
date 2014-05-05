@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include "AvlIntTree.h"
+#include <list>
 #undef max
 
 Analysis::Analysis(void)
@@ -86,6 +87,7 @@ std::vector<Address> Analysis::AddressAnalisys::addresses(void) const
 
 void Analysis::AddressAnalisys::calc_stack_dist(void)
 {
+	const unsigned int M = 1000;		// size of stack
 	const unsigned int inf = std::numeric_limits<unsigned int>::max();
 	const unsigned int cache_size = v.size();			// amount of links in stack
 	std::set<Address> cache;
@@ -93,28 +95,79 @@ void Analysis::AddressAnalisys::calc_stack_dist(void)
 	AvlIntTree avl(AvlKey(0, cache_size - 1), 0);		// in the beginning avl tree contains only one node	
 	avl.par = NULL;
 	//AvlIntTree avl;
-	for (int i = 0; i < cache_size; i++)
+	/*for (int i = 0; i < cache_size; i++)
 	{
 		std::set<Address>::iterator itr = cache.find(v[i]);
-		if (itr == cache.end())				// v[i] is not in the stack
+		if (cache.size() < M)
 		{
- 			cache.insert(v[i]);
-			index[v[i]] = i;
-			int delta = 0;
-			avl.add_new_elem(i, delta);
-			v[i].dist = inf;
+			if (itr == cache.end())				// v[i] is not in the stack
+			{
+ 				cache.insert(v[i]);
+				index[v[i]] = i;
+				int delta = 0;
+				avl.add_new_elem(i, delta);
+				v[i].dist = inf;
+			}
+			else								// v[i] is already in the stack
+			{
+				int prev_index = index[*itr];
+				v[i].dist = avl.calc_stack_dist(prev_index, i, cache_size);
+				int delt = 0;
+				if (i == v.size() - 1) { break; }
+				avl.add_new_elem(i, delt);
+				unsigned int delta = 0;
+				avl.restore(prev_index, delta);		// removes prev_index from the avl tree
+				index[*itr] = i;
+			}
 		}
-		else								// v[i] is already in the stack
+		else
 		{
-			int prev_index = index[*itr];
-			v[i].dist = avl.calc_stack_dist(prev_index, i, cache_size);
-			int delt = 0;
-			if (i == v.size() - 1) { break; }
-			avl.add_new_elem(i, delt);
-			unsigned int delta = 0;
-			avl.restore(prev_index, delta);		// removes prev_index from the avl tree
-			index[*itr] = i;
+			if (itr == cache.end())
+			{
+
+			}
 		}
+	}*/
+	std::list<Address> l;
+	for (int i = 0; i < cache_size; ++i)
+	{
+		std::list<Address>::iterator itr;
+		int dist = 0;
+		for (itr = l.begin(); itr != l.end(); itr++)
+		{
+			if (itr->get_val() == v[i].get_val())
+			{
+				break;
+			}
+			dist++;
+		}
+		bool wasFound = (itr != l.end());
+		if (l.size() < M)
+		{
+			if (!wasFound)		// not found in stack
+			{
+				l.push_front(v[i]);
+			}
+			else					// found in stack
+			{
+				l.erase(itr);
+				l.push_front(v[i]);
+			}
+		}
+		else						// if stack is fullfilled
+		{
+			if (!wasFound)		// not found in stack
+			{
+				l.pop_back();
+				l.push_front(v[i]);
+			}
+			else					// found in stack
+			{
+				l.erase(itr);
+				l.push_front(v[i]);
+			}
+		}
+		v[i].dist = (wasFound) ? dist : inf;
 	}
 }
 // allocates memory but doesn't free it
@@ -177,15 +230,24 @@ params_fixed Analysis::FixedAnalisys::calc_params_size(const Analysis &analis)
 	}
 	params_fixed *psize = new params_fixed();
 	for (int i = 0; i < MAGIC_NUMBER; ++i)
-		psize->p[i] = p[i];
+		psize->p[i] = p[i] / len;
 	return *psize;
 }
 // must be the same as calc_params_size
 params_fixed Analysis::FixedAnalisys::calc_params_type(const Analysis &analis)
 {
+	const int MAGIC_NUMBER = 5;
+	double p[MAGIC_NUMBER] = {0.0, 0.0, 0.0, 0.0, 0.0};		// magic number see in params.h params_fixed
+	int len = analis.len();
+	for (int i = 0; i < len; ++i)
+	{
+		req_type x = analis[i].type;
+		if (x == read) { p[0]++; }
+		else if (x == write) { p[1]++; }
+	}
 	params_fixed *ptype = new params_fixed();
-	ptype->p[0] = 0.3;
-	ptype->p[1] = 0.7;
+	for (int i = 0; i < MAGIC_NUMBER; ++i)
+		ptype->p[i] = p[i] / len;
 	return *ptype;
 }
 Analysis::TimeAnalisys::TimeAnalisys(void)

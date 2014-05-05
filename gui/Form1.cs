@@ -38,6 +38,7 @@ namespace gui
         }
         private void button1_Click(object sender, EventArgs e)
         {
+            if (button1.Enabled == false) { return; }
             //label1.Text = browse_dialog.FileName;
             params_time pt = new params_time();
             params_addr pa = new params_addr();
@@ -45,9 +46,9 @@ namespace gui
             params_fixed ptype = new params_fixed();
             //status progress = new status(0);
             label1.Text = "Processing...";
-            this.Enabled = false;
+            button1.Enabled = false;
             run(browse_dialog.FileName, ref pt, ref pa, ref psize, ref ptype);
-            this.Enabled = true;
+            button1.Enabled = true;
             label1.Text = "Done.";
             unsafe
             {

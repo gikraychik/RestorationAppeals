@@ -15,8 +15,6 @@ using namespace std;
 
 void testing(my_test *t)
 {
-	//t->x = 23;
-	//t->y = 'A';
 	t->n = 10;
 	t->arr = new int[t->n];
 	for (int i = 0; i < t->n; ++i)
@@ -26,14 +24,6 @@ void testing(my_test *t)
 }
 void run(char *path, params_time *pt, params_addr *pa, params_fixed *psize, params_fixed *ptype)
 {
-	//progress->value = 50;
-	/*pa->m = new double[1];
-	pa->k = new double[1];
-	pa->m[0] = 2.3; pa->k[0] = 7.9;
-	psize->p[0] = 2.478;
-	psize->p[3] = 1.35;
-	ptype->p[0] = 0.4;
-	ptype->p[1] = 0.6;*/
 	try
 	{
 		FILE *r = fopen("file.txt", "w");
