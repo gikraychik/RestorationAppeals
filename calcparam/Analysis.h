@@ -33,9 +33,10 @@ public:
 		AddressAnalisys(void);
 		AddressAnalisys(const Analysis &analis);
 		void calc_stack_dist(void);
+		params_addr calc_params(void);
 		inline std::vector<Address> addresses(void) const;
 	protected:
-		std::vector<Address> v;
+		std::vector<Address> v;		// represents stack distances
 	private:
 
 	};
@@ -48,6 +49,15 @@ public:
 	private:
 		static double calc_lambda_moments(unsigned int *data, int len);
 		static double calc_lambda_distr(unsigned int *data, int len, double a, double b);
+	};
+	// analises size and type
+	// as they're descreate values
+	class FixedAnalisys
+	{
+	public:
+		FixedAnalisys(void);
+		static params_fixed calc_params_size(const Analysis &analis);
+		static params_fixed calc_params_type(const Analysis &analis);
 	};
 private:
 	std::fstream input;

@@ -117,6 +117,34 @@ void Analysis::AddressAnalisys::calc_stack_dist(void)
 		}
 	}
 }
+// allocates memory but doesn't free it
+params_addr Analysis::AddressAnalisys::calc_params(void)
+{
+	int len = v.size();
+	double sum1 = 0.0;
+	double sum2 = 0.0;
+	for (int i = 0; i < len; ++i)
+	{
+		sum1 += v[i].get_dist();
+		sum2 += v[i].get_dist() * v[i].get_dist();
+	}
+	double E = sum1 / len;										// мат. ожидание
+	double D = sum2 / len - (sum1 / len) * (sum1 / len);		// дисперсия
+	double k = (MyMath::solve_square_equation(D, -2*D, -E*E)).second;			// выбираем наибольший из корней
+	if (k == 0) throw -1;										// division by zero
+	double a = E * (k - 1) / k;
+	
+	int *pos = new int[1];
+	double *kk = new double[1];
+	double *mm = new double[1];
+	pos[0] = 0; kk[0] = k; mm[0] = a;
+	params_addr *pa = new params_addr();
+	pa->position = pos;
+	pa->k = kk;
+	pa->m = mm;
+	pa->n = 1;
+	return *pa;
+}
 params_time Analysis::TimeAnalisys::calc_params(method mode, const Analysis &analis)
 {
 	int len = analis.len();
@@ -135,6 +163,30 @@ params_time Analysis::TimeAnalisys::calc_params(method mode, const Analysis &ana
 	delete[] pos;
 	delete[] l;
 	return result;
+}
+params_fixed Analysis::FixedAnalisys::calc_params_size(const Analysis &analis)
+{
+	const int MAGIC_NUMBER = 5;
+	double p[MAGIC_NUMBER] = {0.0, 0.0, 0.0, 0.0, 0.0};		// magic number see in params.h params_fixed
+	int len = analis.len();
+	for (int i = 0; i < len; ++i)
+	{
+		unsigned short x = analis[i].size;
+		if (x >= MAGIC_NUMBER) continue;
+		p[x]++;
+	}
+	params_fixed *psize = new params_fixed();
+	for (int i = 0; i < MAGIC_NUMBER; ++i)
+		psize->p[i] = p[i];
+	return *psize;
+}
+// must be the same as calc_params_size
+params_fixed Analysis::FixedAnalisys::calc_params_type(const Analysis &analis)
+{
+	params_fixed *ptype = new params_fixed();
+	ptype->p[0] = 0.3;
+	ptype->p[1] = 0.7;
+	return *ptype;
 }
 Analysis::TimeAnalisys::TimeAnalisys(void)
 {
