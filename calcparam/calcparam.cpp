@@ -24,9 +24,16 @@ void testing(my_test *t)
 		t->arr[i] = i;
 	}
 }
-void run(char *path, params_time *pt)
+void run(char *path, params_time *pt, params_addr *pa, params_fixed *psize, params_fixed *ptype)
 {
 	//progress->value = 50;
+	pa->m = new double[1];
+	pa->k = new double[1];
+	pa->m[0] = 2.3; pa->k[0] = 7.9;
+	psize->p[0] = 2.478;
+	psize->p[3] = 1.35;
+	ptype->p[0] = 0.4;
+	ptype->p[1] = 0.6;
 	try
 	{
 		FILE *r = fopen("file.txt", "w");

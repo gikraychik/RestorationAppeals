@@ -47,3 +47,19 @@ void params_addr::operator =(const params_addr par)
 	this->m = par.m;
 	this->k = par.k;
 }
+
+// Size
+params_fixed::params_fixed(void)
+{
+	p[0] = p[1] = p[2] = p[3] = p[4] = 0.0;
+}
+params_fixed::params_fixed(double a1, double a2, double a3, double a4, double a5)
+{
+	p[0] = a1; p[1] = a2; p[2] = a3;
+	p[3] = a4; p[4] = a5;
+}
+params_fixed::params_fixed(double a1, double a2)
+{
+	p[0] = a1; p[1] = a2;
+	p[2] = p[3] = p[4] = 0;
+}

@@ -28,6 +28,16 @@ struct params_addr
 	double *k;
 	int n;
 };
+
+// для дискретных случайных величин
+struct params_fixed
+{
+	params_fixed(void);
+	params_fixed(double a1, double a2, double a3, double a4, double a5);
+	params_fixed(double a1, double a2);
+	double p[5];
+};
+
 class status
 {
 public:

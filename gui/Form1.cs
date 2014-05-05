@@ -17,14 +17,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace gui
 {
     public partial class Form1 : Form
     {
         [DllImport("C:/Users/Kraychik/Documents/Visual Studio 2010/Projects/calcparam/Release/calcparam.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "run")]
-        public static extern void run(string path, ref params_time pt);
+        public static extern void run(string path, ref params_time pt, ref params_addr pa, ref params_fixed psize, ref params_fixed ptype);
         [DllImport("C:/Users/Kraychik/D ocuments/Visual Studio 2010/Projects/calcparam/Release/calcparam.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "testing")]
         public static extern void testing(ref my_test t);
 
@@ -41,17 +40,27 @@ namespace gui
         {
             //label1.Text = browse_dialog.FileName;
             params_time pt = new params_time();
+            params_addr pa = new params_addr();
+            params_fixed psize = new params_fixed();
+            params_fixed ptype = new params_fixed();
             //status progress = new status(0);
             label1.Text = "Processing...";
             this.Enabled = false;
-            run(browse_dialog.FileName, ref pt);
+            run(browse_dialog.FileName, ref pt, ref pa, ref psize, ref ptype);
             this.Enabled = true;
             label1.Text = "Done.";
             unsafe
             {
-                textBox2.Text = (0.3).ToString();
-                textBox3.Text = (0.8).ToString();
+                textBox2.Text = pa.m[0].ToString();
+                textBox3.Text = pa.k[0].ToString();
                 textBox4.Text = pt.lambda[0].ToString();
+                textBox5.Text = psize.p[0].ToString();
+                textBox6.Text = psize.p[1].ToString();
+                textBox7.Text = psize.p[2].ToString();
+                textBox8.Text = psize.p[3].ToString();
+                textBox11.Text = psize.p[4].ToString();
+                textBox9.Text = ptype.p[0].ToString();
+                textBox10.Text = ptype.p[1].ToString();
             }
         }
 
@@ -83,6 +92,20 @@ namespace gui
         public int n;
         //public int x;
         //public byte y;
+    }
+    [StructLayout(LayoutKind.Sequential)]
+    unsafe public struct params_addr
+    {
+        public int* position;
+        public double* m;
+        public double* k;
+        public int n;
+    }
+    [StructLayout(LayoutKind.Sequential)]
+    public struct params_fixed
+    {
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst=5)]
+        public double[] p;
     }
     public class A
     {
