@@ -3,17 +3,8 @@ struct params_time
 {
 	params_time(void);
 	params_time(const int *pos, const double *value, int n)	;	// n = len(pos)
-	~params_time(void);
+	//~params_time(void);
 	inline void operator =(const params_time par);
-	/*void operator =(params_time par)
-	{
-		this->n = n;
-		for (int i = 0; i < n; ++i)
-		{
-			position[i] = par.position[i];
-			lambda[i] = par.lambda[i];
-		}
-	}*/
 	/*
 		specifies numbers where switching accured
 		always start from 0
@@ -25,4 +16,11 @@ struct params_time
 	*/
 	double *lambda;
 	int n;		// length of each array
+};
+struct my_test
+{
+	my_test(int *x, int n) : arr(x), n(n) {}
+	int sum(void) { return *arr + n; }
+	int *arr;
+	int n;
 };

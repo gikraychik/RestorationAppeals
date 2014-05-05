@@ -13,10 +13,24 @@
 #include "params.h"
 using namespace std;
 
-int run(const char *path)
+void testing(my_test *t)
+{
+	//t->x = 23;
+	//t->y = 'A';
+	t->n = 10;
+	t->arr = new int[t->n];
+	for (int i = 0; i < t->n; ++i)
+	{
+		t->arr[i] = i;
+	}
+}
+void run(char *path, params_time *pt)
 {
 	try
 	{
+		FILE *r = fopen("file.txt", "w");
+		fprintf(r, path);
+		fclose(r);
 		Analysis analis(path);
 		for (int i = 0; i < analis.requests().size(); i++)
 		{
@@ -24,13 +38,12 @@ int run(const char *path)
 		}
 		Analysis::AddressAnalisys adAnalis(analis);
 		adAnalis.calc_stack_dist();
-		params_time pt = Analysis::TimeAnalisys::calc_params(Analysis::TimeAnalisys::DISTR, analis);
-		//params_time pt2 = Analysis::TimeAnalisys::calc_params(Analysis::TimeAnalisys::MOMENTS, analis);
+		params_time pt1 = Analysis::TimeAnalisys::calc_params(Analysis::TimeAnalisys::DISTR, analis);
+		pt->lambda = pt1.lambda; pt->position = pt1.position; pt->n = pt1.n;
 		FILE *f = fopen("res.txt", "w");
-		for (int i = 0; i < pt.n; ++i)
+		for (int i = 0; i < pt->n; ++i)
 		{
-			fprintf(f, "%d %g\n", pt.position[i], pt.lambda[i]);
-			//fprintf(f, "%d %g\n", pt2.position[i], pt2.lambda[i]);
+			fprintf(f, "%d %g\n", pt->position[i], pt->lambda[i]);
 		}
 		fclose(f);
 	}
@@ -49,5 +62,6 @@ int run(const char *path)
 		Analysis::TimeAnalisys t_analis(analis);
 	}*/
 	//system("pause");
-	return 8;
+	//params_time pt;
+	//return pt;
 }

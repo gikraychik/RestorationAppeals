@@ -129,14 +129,13 @@ params_time Analysis::TimeAnalisys::calc_params(method mode, const Analysis &ana
 	}
 	double lambda = 0.0;
 	lambda = (mode == MOMENTS) ? calc_lambda_moments(data, len) : calc_lambda_distr(data, len, 0.000001, 0.09);
-	pos[0] = 0; l[0] = lambda;
+	pos[0] = 2; l[0] = lambda;
 	params_time result(pos, l, 1);
 	delete[] data;
 	delete[] pos;
 	delete[] l;
 	return result;
 }
-//Analysis::TimeAnalisys::TimeAnalisys(void) {}
 Analysis::TimeAnalisys::TimeAnalisys(void)
 {
 	/*std::vector <unsigned int> data(analis.len()-1, 0);

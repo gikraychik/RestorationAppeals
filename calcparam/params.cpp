@@ -13,11 +13,11 @@ params_time::params_time(const int *pos, const double *value, int n)
 	}
 	this->n = n;
 }
-params_time::~params_time()
+/*params_time::~params_time()
 {
 	delete[] position;
 	delete[] lambda;
-}
+}*/
 /*
 	does not copy memory!
 	copies only links!
