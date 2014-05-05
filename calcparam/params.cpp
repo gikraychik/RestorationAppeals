@@ -28,3 +28,22 @@ void params_time::operator =(const params_time par)
 	this->lambda = par.lambda;
 	this->n = n;
 }
+
+// Addresses
+params_addr::params_addr(void) : position(0), m(0), k(0), n(0) {}
+params_addr::params_addr(const int *pos, const double *m, const double *k, int n) : n(n)
+{
+	for (int i = 0; i < n; ++i)
+	{
+		this->position[i] = pos[i];
+		this->m[i] = m[i];
+		this->k[i] = k[i];
+	}
+}
+void params_addr::operator =(const params_addr par)
+{
+	this->n = par.n;
+	this->position = par.position;
+	this->m = par.m;
+	this->k = par.k;
+}

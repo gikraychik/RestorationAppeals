@@ -17,6 +17,24 @@ struct params_time
 	double *lambda;
 	int n;		// length of each array
 };
+struct params_addr
+{
+	params_addr(void);
+	// m, k - parameters of Pareto distribution. m - moda
+	params_addr(const int *pos, const double *m, const double *k, int n);
+	inline void operator =(const params_addr par);
+	int *position;
+	double *m;
+	double *k;
+	int n;
+};
+class status
+{
+public:
+	int value;
+	//int *evnt;
+};
+
 struct my_test
 {
 	my_test(int *x, int n) : arr(x), n(n) {}

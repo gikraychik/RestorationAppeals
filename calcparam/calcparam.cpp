@@ -26,6 +26,7 @@ void testing(my_test *t)
 }
 void run(char *path, params_time *pt)
 {
+	//progress->value = 50;
 	try
 	{
 		FILE *r = fopen("file.txt", "w");
