@@ -90,8 +90,8 @@ void Analysis::AddressAnalisys::calc_stack_dist(void)
 	const unsigned int M = 1000;		// size of stack
 	const unsigned int inf = std::numeric_limits<unsigned int>::max();
 	const unsigned int cache_size = v.size();			// amount of links in stack
-	std::set<Address> cache;
-	std::map<Address, int> index;						// for each address there is an index of it's last use
+	//std::set<Address> cache;
+	//std::map<Address, int> index;						// for each address there is an index of it's last use
 	AvlIntTree avl(AvlKey(0, cache_size - 1), 0);		// in the beginning avl tree contains only one node	
 	avl.par = NULL;
 	//AvlIntTree avl;
@@ -129,42 +129,58 @@ void Analysis::AddressAnalisys::calc_stack_dist(void)
 		}
 	}*/
 	std::list<Address> l;
+	std::set<Address> cache;
+	std::map<Address, std::list<Address>::const_iterator> index; 
 	for (int i = 0; i < cache_size; ++i)
 	{
-		std::list<Address>::iterator itr;
+		//std::list<Address>::iterator itr;
+		std::set<Address>::iterator itr;
 		int dist = 0;
-		for (itr = l.begin(); itr != l.end(); itr++)
+		/*for (itr = l.begin(); itr != l.end(); itr++)
 		{
 			if (itr->get_val() == v[i].get_val())
 			{
 				break;
 			}
 			dist++;
-		}
-		bool wasFound = (itr != l.end());
+		}*/
+		//bool wasFound = (itr != l.end());
+		itr = cache.find(v[i]);
+		bool wasFound = (itr == cache.end());
 		if (l.size() < M)
 		{
 			if (!wasFound)		// not found in stack
 			{
 				l.push_front(v[i]);
+				cache.insert(v[i]);
+				index[v[i]] = l.begin();
 			}
 			else					// found in stack
 			{
-				l.erase(itr);
+				l.erase(index[*itr]);
 				l.push_front(v[i]);
+				cache.insert(v[i]);
+				cache.erase(*itr);
+				index[v[i]] = l.begin();
+				index.erase(*itr);
 			}
 		}
 		else						// if stack is fullfilled
 		{
 			if (!wasFound)		// not found in stack
 			{
+				cache.erase(l.back());
+				index.erase(l.back());
 				l.pop_back();
 				l.push_front(v[i]);
+				cache.insert(v[i]);
+				index[v[i]] = l.begin();
 			}
 			else					// found in stack
 			{
-				l.erase(itr);
+				l.erase(index[*itr]);
 				l.push_front(v[i]);
+				index[v[i]] = l.begin();
 			}
 		}
 		v[i].dist = (wasFound) ? dist : inf;
